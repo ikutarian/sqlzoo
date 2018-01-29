@@ -28,7 +28,7 @@ SELECT teacher.name, dept.name
 SELECT teacher.name, dept.name
  FROM teacher
  RIGHT JOIN dept ON (teacher.dept = dept.id)
-``
+```
 
 ## 5. Use COALESCE to print the mobile number. Use the number '07986 444 2266' if there is no number given
 
