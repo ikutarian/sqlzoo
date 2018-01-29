@@ -108,3 +108,52 @@ SELECT * FROM
     GROUP BY movie.yr) AS t
 WHERE t.num > 2
 ```
+
+## 12. List the film title and the leading actor for all of the films 'Julie Andrews' played in
+
+```SQL
+SELECT movie.title, actor.name 
+ FROM movie 
+ JOIN casting ON casting.movieid = movie.id AND casting.ord = 1
+ JOIN actor ON actor.id = casting.actorid
+ WHERE 
+  casting.movieid IN (
+   SELECT movieid FROM casting 
+    WHERE actorid IN (SELECT id FROM actor WHERE name='Julie Andrews'))
+```
+
+## 13. Obtain a list, in alphabetical order, of actors who've had at least 30 starring roles
+
+```SQL
+SELECT actor.name
+ FROM actor
+ JOIN casting ON casting.actorid = actor.id 
+ WHERE casting.ord = 1
+ GROUP BY actor.name
+ HAVING COUNT(movieid) >= 30
+ ORDER BY actor.name
+```
+
+## 14. List the films released in the year 1978 ordered by the number of actors in the cast, then by title
+
+```SQL
+SELECT movie.title, COUNT(casting.actorid)
+ FROM movie
+ JOIN casting on casting.movieid = movie.id
+ WHERE movie.yr = 1978
+ GROUP BY movie.title
+ ORDER BY COUNT(casting.actorid) DESC, movie.title
+```
+
+## 15. List all the people who have worked with 'Art Garfunkel'
+
+```SQL
+SELECT actor.name 
+ FROM actor 
+ JOIN casting ON casting.actorid = actor.id 
+ WHERE casting.movieid IN (SELECT casting.movieid 
+   FROM casting 
+   JOIN actor ON casting.actorid = actor.id 
+   WHERE actor.name = 'Art Garfunkel')
+ AND actor.name <> 'Art Garfunkel'
+```
